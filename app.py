@@ -61,6 +61,8 @@ def tweet_mention():
         tweeti = api.update_status('1/2 \n'+ reply0_tweet, in_reply_to_status_id = tweet.id, auto_populate_reply_metadata = True)
         api.update_status('2/2 \n'+reply1_tweet, in_reply_to_status_id = tweeti.id, auto_populate_reply_metadata=True)
         print("done with thread")
+        success = True
+        return success
 
 
     
