@@ -1,4 +1,4 @@
-consumer_key= "pIZw54XtvVuGZM4TTJYHZrFX1"
-consumer_secret="6x1ohdPHRdFnSrUGUo6qbEup3O7eiVk5mMNpnFXcWrLQPNVhTC"
-access_token_key="1305611268447928320-F1l1dmnitjvqankinOLIdmDSzDAuqr"
-access_token_secret="nmrdw9UwyGbff2Vp11MSbBvaQH2qONJuyPsGbak12V1dR"
+consumer_key= "uUXImM9fzo4BOrwadKnre58QN"
+consumer_secret="mJjBerCgxWbZdNfRiU0Czxw3eBiN1lVwgOfV0mR0FB0t4YL4B4"
+access_token_key="1305611268447928320-BTXbhsOdu1ij9S2b30dKTABaIkeidJ"
+access_token_secret="ggS1qD8lnZ6DYXnlZ4Mm247J4H8fdP65zZyitVlvQD20D"
