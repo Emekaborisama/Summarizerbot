@@ -1,14 +1,18 @@
-
-
+import os
+#from autocorrect import Speller
+#spell = Speller('en')
 import torch
 from transformers import *
 from summarizer import Summarizer, TransformerSummarizer
-from textwrap import wrap
+#from textwrap import wrap
 import tweepy as tp
 import pandas as pd
 import numpy as np
 import re
 from threadtotext import thready
+import emoji
+import requests
+
 
 import logging
 import os
@@ -17,9 +21,11 @@ from time import sleep
 logger = logging.getLogger()
 
 # Start writing code here...import tweepy as tp
-auth = tp.OAuthHandler('pIZw54XtvVuGZM4TTJYHZrFX1', '6x1ohdPHRdFnSrUGUo6qbEup3O7eiVk5mMNpnFXcWrLQPNVhTC')
-auth.set_access_token('1305611268447928320-F1l1dmnitjvqankinOLIdmDSzDAuqr', 'nmrdw9UwyGbff2Vp11MSbBvaQH2qONJuyPsGbak12V1dR')
+# Start writing code here...import tweepy as tp
+auth = tp.OAuthHandler('uUXImM9fzo4BOrwadKnre58QN', 'mJjBerCgxWbZdNfRiU0Czxw3eBiN1lVwgOfV0mR0FB0t4YL4B4')
+auth.set_access_token('1305611268447928320-BTXbhsOdu1ij9S2b30dKTABaIkeidJ', 'ggS1qD8lnZ6DYXnlZ4Mm247J4H8fdP65zZyitVlvQD20D')
 api = tp.API(auth)
+
 
 try:
     api.verify_credentials()
@@ -27,49 +33,91 @@ try:
 except:
     print("Error during authentication")
 
+import pymongo
+import dns
+
+client = pymongo.MongoClient("mongodb+srv://emekaboria:jmapLBIwaO5Xrnow@cluster0.g6tlp.mongodb.net/tweetid?retryWrites=true&w=majority")
+db = client.get_database('tweetid')
+
+record = db.summa_collection
 
 
 
+
+def strip_emoji(text):
+    print(emoji.emoji_count(text))
+    new_text = re.sub(emoji.get_emoji_regexp(), r"", text)
+    return new_text
 def clean(text):
-    textii = text.replace('<br>', '')
-    out = re.sub(r'\d+', ' ', textii)
-    out = out.replace('^RT[\s]+', '')
+    textii = re.sub("<br>", "", text)
+    textiii = re.sub("><", "", textii)
+    tt = re.sub(r"http\S+", "", textiii)
+    #out = re.sub(r'\d+', ' ', tt)
+    out = tt.replace('^RT[\s]+', '')
     out = out.replace('[^\w\s]','')
-    out4 = out.lower()
-    return out4
+    outi = strip_emoji(out)
+    #out4 = outi.lower()
+    return outi
 
 
+
+
+
+
+GPT2_model = TransformerSummarizer(transformer_type="GPT2", transformer_model_key="gpt2-medium")
+
+import random 
+def record_tweet_summary(tweet, summary, tweetid):
+    n = random.randint(0,220000000000000000)
+    ref_id = n
+    new_file = {
+    'idd':n,
+    'Tweets':tweet,
+    'tweet_id': tweetid,
+    'Summary':summary
+    }
+    record.insert_one(new_file)
+    return ref_id
+    print(ref_id)
 
 def tweet_mention():
-    tweets = api.mentions_timeline(count = 1)
+    tweets = api.mentions_timeline(tweet_mode= 'extended', count = 1, since_id =1)
     for tweet in tweets:
+        #record_id = record.insert_one(str(tweet.id))
         url =  'https://twitter.com/' + tweet.id_str+ '/status/' + str(tweet.in_reply_to_status_id)
         texti = thready(url)
         text = clean(texti)
-        model = TransformerSummarizer(transformer_type="XLNet",transformer_model_key="xlnet-base-cased")
-        full = ''.join(model(text, min_length=60, ratio = 0.3))
+        #GPT2_model = TransformerSummarizer(transformer_type="GPT2", transformer_model_key="gpt2-medium")
+        full = ''.join(GPT2_model(text, min_length=50))
+        fullfinal = full
+        ori_tweet_id = tweet.id
+        ref_idd = record_tweet_summary(tweet = text, summary = full, tweetid=ori_tweet_id)
     try:
-        tweetiii = api.update_status(full, in_reply_to_status_id = tweet.id, auto_populate_reply_metadata = True)
-        print('done with the one tweet update....')       
+        api.update_status(fullfinal, in_reply_to_status_id = tweet.id, auto_populate_reply_metadata = True)
+        print('done with the one tweet update....')      
     except:
-        print('Doing the thread update...........')
-        anothers = wrap(full, 270)
-        anothers[0]
-        print('Doing the thread update...........')
-        reply0_tweet = anothers[0]
-        reply1_tweet = anothers[1]
-        tweeti = api.update_status('1/2 \n'+ reply0_tweet, in_reply_to_status_id = tweet.id, auto_populate_reply_metadata = True)
-        api.update_status('2/2 \n'+reply1_tweet, in_reply_to_status_id = tweeti.id, auto_populate_reply_metadata=True)
-        print("done with thread")
-        success = True
-        return success
+        print(ref_idd)
+        send_user = 'https://summapi.herokuapp.com/summa/?ref_id='+str(ref_idd)
+        api.update_status('Your summary exceeded our limit, so we created a link for your summary. Click the link to view your summary \n'+send_user, in_reply_to_status_id = tweet.id, auto_populate_reply_metadata = True)
+        print('done with the link tweet update....')      
+    
+    
+
 
 
     
 while True:
-    tweet_mention()
-    sleep(10)
-
-
-
-    
+  tweets = api.mentions_timeline(tweet_mode= 'extended', count = 1)
+  for tweet in tweets:
+    tweeti = tweet.id
+    #findd = 1332483393288802310
+    find_tweetid = record.find_one({"tweet_id":tweeti})
+    if find_tweetid == None:
+      print("none")
+      tweet_mention()
+    else:
+      finda = find_tweetid['tweet_id']
+      if tweeti == finda:
+        print("found")
+        #break
+  sleep(5)
