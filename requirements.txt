@@ -6,4 +6,10 @@ neuralcoref
 pandas
 torchvision
 tzlocal==2.1
-python-crontab
+autocorrect
+emoji
+dnspython
+pymongo[tls,srv]
+flask
+pymongo
+gunicorn
