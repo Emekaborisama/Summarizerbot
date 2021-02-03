@@ -17,13 +17,14 @@ from re import search
 from datetime import datetime
 
 localzone = get_localzone()
-
 api = OAuth1Session(
     config.consumer_key,
     config.consumer_secret,
     config.access_token_key,
     config.access_token_secret
 )
+
+
 
 endpoint_url = 'https://api.twitter.com/1.1/statuses/show.json'
 
@@ -54,11 +55,6 @@ def get_tweet_recursively(username, tweet_id):
             tweet_text = tweet_text.replace(
                 url['url'], "<%s>" % url['expanded_url'])
 
-    if 'extended_entities' in tweet:
-        if 'media' in tweet['extended_entities'].keys():
-            for media in tweet['extended_entities']['media']:
-                tweet_text = tweet_text.replace(
-                    media['url'], "![image](%s)" % media['media_url_https'])
 
     tweet_lines = tweet_text.splitlines()
     tweet_text = "<br>\n".join(tweet_lines)
