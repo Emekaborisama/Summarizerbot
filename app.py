@@ -105,18 +105,18 @@ def tweet_mention():
 
 
     
-while True:
-  tweets = api.mentions_timeline(tweet_mode= 'extended', count = 1)
-  for tweet in tweets:
-    tweeti = tweet.id
-    #findd = 1332483393288802310
-    find_tweetid = record.find_one({"tweet_id":tweeti})
-    if find_tweetid == None:
-      print("none")
-      tweet_mention()
-    else:
-      finda = find_tweetid['tweet_id']
-      if tweeti == finda:
-        print("found")
-        #break
-  sleep(5)
+if __name__ == "__main__":
+     tweets = api.mentions_timeline(tweet_mode= 'extended', count = 1)
+        for tweet in tweets:
+            tweeti = tweet.id
+            #findd = 1332483393288802310
+            find_tweetid = record.find_one({"tweet_id":tweeti})
+            if find_tweetid == None:
+                print("none")
+                tweet_mention()
+            else:
+                finda = find_tweetid['tweet_id']
+                if tweeti == finda:
+                print("found")
+             #break
+        sleep(5)
