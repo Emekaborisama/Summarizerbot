@@ -22,8 +22,8 @@ logger = logging.getLogger()
 
 # Start writing code here...import tweepy as tp
 # Start writing code here...import tweepy as tp
-auth = tp.OAuthHandler('uUXImM9fzo4BOrwadKnre58QN', 'mJjBerCgxWbZdNfRiU0Czxw3eBiN1lVwgOfV0mR0FB0t4YL4B4')
-auth.set_access_token('1305611268447928320-BTXbhsOdu1ij9S2b30dKTABaIkeidJ', 'ggS1qD8lnZ6DYXnlZ4Mm247J4H8fdP65zZyitVlvQD20D')
+auth = tp.OAuthHandler('tlw54qI2CQCpl4jMeTzzO84lo', 'XZmyDbiGYlYT9Gpsxt3xxzspcYNcdVWDwgforsB8U0RuJOCBjn')
+auth.set_access_token('1305611268447928320-dXwydd1AssWvEYCu0E24KpL9MhzVX2', 'DG8kwsQsHAsMonLclgWtnPOzKIY3fZomo4xh9e2sYuUEf')
 api = tp.API(auth)
 
 
@@ -63,7 +63,7 @@ def clean(text):
 
 
 
-#GPT2_model = TransformerSummarizer(transformer_type="GPT2", transformer_model_key="gpt2-medium")
+GPT2_model = TransformerSummarizer(transformer_type="GPT2", transformer_model_key="gpt2-medium")
 
 import random 
 def record_tweet_summary(tweet, summary, tweetid):
@@ -86,7 +86,7 @@ def tweet_mention():
         url =  'https://twitter.com/' + tweet.id_str+ '/status/' + str(tweet.in_reply_to_status_id)
         texti = thready(url)
         text = clean(texti)
-        GPT2_model = TransformerSummarizer(transformer_type="GPT2", transformer_model_key="gpt2-medium")
+        #GPT2_model = TransformerSummarizer(transformer_type="GPT2", transformer_model_key="gpt2-medium")
         full = ''.join(GPT2_model(text, min_length=50))
         fullfinal = full
         ori_tweet_id = tweet.id
