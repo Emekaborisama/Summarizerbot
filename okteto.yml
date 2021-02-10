@@ -8,3 +8,10 @@ forward:
 reverse:
 - 9000:9000
 persistentVolume: {}
+resources:
+  requests:
+    cpu: "2500m"
+    memory: "6400Mi"
+  limits:
+    cpu: "5000m"
+    memory: "6Gi"
