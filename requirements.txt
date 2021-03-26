@@ -1,0 +1,10 @@
+tweepy
+pandas
+tzlocal==2.1
+autocorrect
+emoji
+dnspython
+pymongo[tls,srv]
+flask
+pymongo
+gunicorn
