@@ -62,13 +62,18 @@ def clean(text):
 def gpt_2(text):
   url = "https://summarizerapi3-emekaborisama.cloud.okteto.net/summariz"
   payload = json.dumps({
-  "text": text
+  "text": text['text']
   })
   headers = {
   'Content-Type': 'application/json'
   }
   response = requests.request("POST", url, headers=headers, data=payload)
-  return response.text
+  if response.status_code == 200:
+    result = response.text
+    return result
+  else:
+    result = "An error occur, pls try again"
+    return result
 
 
 #GPT2_model = TransformerSummarizer(transformer_type="GPT2", transformer_model_key="gpt2-medium")
@@ -94,13 +99,18 @@ def tweet_mention():
         url =  'https://twitter.com/' + tweet.id_str+ '/status/' + str(tweet.in_reply_to_status_id)
         texti = thready(url)
         text = clean(texti)
-        fu = gpt_2(text = text)
-        full = fu['text']
-        fullfinal = full
+        textii = {"text": text}
+        fu2 = gpt_2(text = textii)
+        if fu2 == 'An error occur, pls try again':
+            fu = fu2
+            print("error update")
+        else:
+            fu = fu2[13: -4]
+        full = fu
         ori_tweet_id = tweet.id
         ref_idd = record_tweet_summary(tweet = text, summary = full, tweetid=ori_tweet_id)
     try:
-        api.update_status(fullfinal, in_reply_to_status_id = tweet.id, auto_populate_reply_metadata = True)
+        api.update_status(full, in_reply_to_status_id = tweet.id, auto_populate_reply_metadata = True)
         print('done with the one tweet update....')      
     except:
         print(ref_idd)
