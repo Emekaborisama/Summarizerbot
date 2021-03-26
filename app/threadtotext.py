@@ -11,7 +11,7 @@
 #      <http://creativecommons.org/publicdomain/zero/1.0/>.
 
 import json
-import config
+import app.config as config
 from requests_oauthlib import OAuth1Session
 from tzlocal import get_localzone
 from re import search
