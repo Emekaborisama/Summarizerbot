@@ -94,7 +94,8 @@ def tweet_mention():
         url =  'https://twitter.com/' + tweet.id_str+ '/status/' + str(tweet.in_reply_to_status_id)
         texti = thready(url)
         text = clean(texti)
-        full = gpt_2(text = text)
+        fu = gpt_2(text = text)
+        full = fu['text']
         fullfinal = full
         ori_tweet_id = tweet.id
         ref_idd = record_tweet_summary(tweet = text, summary = full, tweetid=ori_tweet_id)
