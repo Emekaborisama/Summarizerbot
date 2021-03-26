@@ -6,7 +6,7 @@ import tweepy as tp
 import pandas as pd
 import numpy as np
 import re
-from app.threadtotext import thready
+from threadtotext import thready
 import emoji
 import requests
 import json
