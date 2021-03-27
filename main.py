@@ -22,7 +22,7 @@ logger = logging.getLogger()
 # Start writing code here...import tweepy as tp
 auth = tp.OAuthHandler('5FecqRmreBqZqtpyBXdfPSffM', 'zEWFERzcCluMg4RUAtpm0V8Nu6fmv3CsqgDrafiESJaS58RZ9w')
 auth.set_access_token('1305611268447928320-QBJuKUsGm3AWKaRcCA8ZlZCjOpgbPc', '0vvBoWr3d8IxlrfpLs57tznntDOBlUxf9CkKugo1AVtDa')
-api = tp.API(auth, wait_on_rate_limit=True, wait_on_rate_limit_notify=True)
+api = tp.API(auth, wait_on_rate_limit=True, wait_on_rate_limit_notify=True, sleep_on_rate_limit=False)
 
 
 try:
