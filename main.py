@@ -22,7 +22,7 @@ logger = logging.getLogger()
 # Start writing code here...import tweepy as tp
 auth = tp.OAuthHandler('5FecqRmreBqZqtpyBXdfPSffM', 'zEWFERzcCluMg4RUAtpm0V8Nu6fmv3CsqgDrafiESJaS58RZ9w')
 auth.set_access_token('1305611268447928320-QBJuKUsGm3AWKaRcCA8ZlZCjOpgbPc', '0vvBoWr3d8IxlrfpLs57tznntDOBlUxf9CkKugo1AVtDa')
-api = tp.API(auth, wait_on_rate_limit=True, wait_on_rate_limit_notify=True, sleep_on_rate_limit=False)
+api = tp.API(auth, wait_on_rate_limit=True, wait_on_rate_limit_notify=True)
 
 
 try:
@@ -121,7 +121,7 @@ def tweet_mention():
     
 
 
-while True:
+"""while True:
   tweets = api.mentions_timeline(tweet_mode= 'extended', count = 1)
   for tweet in tweets:
     tweeti = tweet.id
@@ -135,6 +135,27 @@ while True:
       if tweeti == finda:
         print("found")
         #break
-  sleep(5)
+  sleep(5)"""
 
+while True:
+    try:
+        tweets = api.mentions_timeline(tweet_mode= 'extended', count = 1)
+        for tweet in tweets:
+            tweeti = tweet.id
+            #findd = 1332483393288802310
+            find_tweetid = record.find_one({"tweet_id":tweeti})
+            if find_tweetid == None:
+                print("none")
+                tweet_mention()
+            else:
+                finda = find_tweetid['tweet_id']
+                if tweeti == finda:
+                    print("found")
+                    #break
+        sleep(5)
+    except tp.TweepError:
+        # If an exception occurs, generally if will be tweepy.RateLimitError and in that case the bot will sleep for 15 minutes.
+        sleep(60 * 15)
+
+        
 
