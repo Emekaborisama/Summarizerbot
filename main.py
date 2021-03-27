@@ -155,7 +155,7 @@ while True:
         sleep(5)
     except tp.TweepError:
         # If an exception occurs, generally if will be tweepy.RateLimitError and in that case the bot will sleep for 15 minutes.
-        sleep(60 * 15)
+        sleep(60 * 1)
 
         
 
