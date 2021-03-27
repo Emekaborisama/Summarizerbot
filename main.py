@@ -57,6 +57,13 @@ def clean(text):
     return outi
 
 
+def reclean(text):
+    cleantext = text.replace('\n', "")
+    string_encode = cleantext.encode("ascii", "ignore")
+    string_decode = string_encode.decode()
+    return string_decode
+
+
 
 
 def gpt_2(text):
@@ -108,7 +115,7 @@ def tweet_mention():
             fu = fu2[13: -4]
         full = fu
         ori_tweet_id = tweet.id
-        full = full.replace('\n', "")
+        full = reclean(full)
         ref_idd = record_tweet_summary(tweet = text, summary = full, tweetid=ori_tweet_id)
     try:
         api.update_status(full, in_reply_to_status_id = tweet.id, auto_populate_reply_metadata = True)
