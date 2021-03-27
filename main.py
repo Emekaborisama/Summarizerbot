@@ -58,8 +58,9 @@ def clean(text):
 
 
 def reclean(text):
-    cleantext = text.replace('\n', "")
-    string_encode = cleantext.encode("ascii", "ignore")
+    cleantext = text.replace('<', "")
+    cleantxt = cleantext.replace('\n', "")
+    string_encode = cleantxt.encode("ascii", "ignore")
     string_decode = string_encode.decode()
     return string_decode
 
