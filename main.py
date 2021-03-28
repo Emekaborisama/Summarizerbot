@@ -12,6 +12,7 @@ import requests
 import json
 
 
+
 import logging
 import os
 from time import sleep
@@ -57,12 +58,12 @@ def clean(text):
     return outi
 
 
+
 def reclean(text):
-    cleantext = text.replace('<', "")
-    cleantxt = cleantext.replace('\n', "")
-    string_encode = cleantxt.encode("ascii", "ignore")
-    string_decode = string_encode.decode()
-    return string_decode
+    cleantxt = re.sub('\n', "", text)
+    cleantext = re.sub('<', "", cleantxt)
+    texti = cleantext.encode('ascii', 'ignore').decode()
+    return texti
 
 
 
@@ -98,11 +99,10 @@ def record_tweet_summary(tweet, summary, tweetid):
     }
     record.insert_one(new_file)
     return ref_id
-    print(ref_id)
 
 def tweet_mention():
-    tweets = api.mentions_timeline(tweet_mode= 'extended', count = 1, since_id =1)
-    for tweet in tweets:
+    tweets = api.mentions_timeline(tweet_mode = 'extended', count = 1)
+    for tweet in tweets:  
         #record_id = record.insert_one(str(tweet.id))
         url =  'https://twitter.com/' + tweet.id_str+ '/status/' + str(tweet.in_reply_to_status_id)
         texti = thready(url)
@@ -116,10 +116,10 @@ def tweet_mention():
             fu = fu2[13: -4]
         full = fu
         ori_tweet_id = tweet.id
-        full2 = reclean(full)
+        full2 = full
         ref_idd = record_tweet_summary(tweet = text, summary = full2, tweetid=ori_tweet_id)
     try:
-        api.update_status(full, in_reply_to_status_id = tweet.id, auto_populate_reply_metadata = True)
+        api.update_status(full2, in_reply_to_status_id = tweet.id, auto_populate_reply_metadata = True)
         print('done with the one tweet update....')      
     except:
         print(ref_idd)
@@ -148,23 +148,32 @@ def tweet_mention():
 
 while True:
     try:
-        tweets = api.mentions_timeline(tweet_mode= 'extended', count = 1)
+        tweets = api.mentions_timeline(count = 1)
         for tweet in tweets:
-            tweeti = tweet.id
-            #findd = 1332483393288802310
-            find_tweetid = record.find_one({"tweet_id":tweeti})
-            if find_tweetid == None:
-                print("none")
-                tweet_mention()
+            tweet_text = re.sub('@[^\s]+','',tweet.text)
+            if "compress" in tweet_text:
+                print(True)
+                tweeti = tweet.id
+                #findd = 1332483393288802310
+                find_tweetid = record.find_one({"tweet_id":tweeti})
+                if find_tweetid == None:
+                    print("none")
+                    tweet_mention()
+                else:
+                    finda = find_tweetid['tweet_id']
+                    if tweeti == finda:
+                        print("found")
+                        #break
+                        sleep(5)
+                    else:
+                        print("nothing")
             else:
-                finda = find_tweetid['tweet_id']
-                if tweeti == finda:
-                    print("found")
-                    #break
-        sleep(5)
+                print(False)
+                tweet.favorite()
+                tweet.retweet()
     except tp.TweepError:
         # If an exception occurs, generally if will be tweepy.RateLimitError and in that case the bot will sleep for 15 minutes.
-        sleep(60 * 1)
+        pass
 
         
 
