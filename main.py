@@ -10,6 +10,10 @@ from app.threadtotext import thready
 import emoji
 import requests
 import json
+from transformers import *
+from summarizer import Summarizer, TransformerSummarizer
+
+
 
 
 
@@ -85,7 +89,7 @@ def gpt_2(text):
     return result
 
 
-#GPT2_model = TransformerSummarizer(transformer_type="GPT2", transformer_model_key="gpt2-medium")
+GPT2_model = TransformerSummarizer(transformer_type="GPT2", transformer_model_key="gpt2-medium")
 
 import random 
 def record_tweet_summary(tweet, summary, tweetid):
@@ -107,19 +111,20 @@ def tweet_mention():
         url =  'https://twitter.com/' + tweet.id_str+ '/status/' + str(tweet.in_reply_to_status_id)
         texti = thready(url)
         text = clean(texti)
-        textii = {"text": text}
-        fu2 = gpt_2(text = textii)
-        if fu2 == 'An error occur, pls try again':
-            fu = fu2
-            print("error update")
-        else:
-            fu = fu2[13: -4]
-        full = fu
+        #textii = {"text": text}
+        full = ''.join(GPT2_model(text, min_length=50))
+        #fu2 = gpt_2(text = textii)
+        #if fu2 == 'An error occur, pls try again':
+            #fu = fu2
+            #print("error update")
+        #else:
+            #fu = fu2[13: -4]
+        #full = fu
         ori_tweet_id = tweet.id
-        full2 = full
-        ref_idd = record_tweet_summary(tweet = text, summary = full2, tweetid=ori_tweet_id)
+        #full2 = full
+        ref_idd = record_tweet_summary(tweet = text, summary = full, tweetid=ori_tweet_id)
     try:
-        api.update_status(full2, in_reply_to_status_id = tweet.id, auto_populate_reply_metadata = True)
+        api.update_status(full, in_reply_to_status_id = tweet.id, auto_populate_reply_metadata = True)
         print('done with the one tweet update....')      
     except:
         print(ref_idd)
