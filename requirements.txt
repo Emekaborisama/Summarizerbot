@@ -7,4 +7,12 @@ dnspython
 pymongo[tls,srv]
 flask
 pymongo
-gunicorn
+bert-extractive-summarizer
+transformers==2.2.0
+#spacy==2.1.3
+#spacy == 2.2.0
+#neuralcoref
+requests_oauthlib
+torchvision
+spacy==2.1.0 
+neuralcoref --no-binary neuralcoref
