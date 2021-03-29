@@ -89,7 +89,6 @@ def gpt_2(text):
     return result
 
 
-GPT2_model = TransformerSummarizer(transformer_type="GPT2", transformer_model_key="gpt2-medium")
 
 import random 
 def record_tweet_summary(tweet, summary, tweetid):
@@ -112,6 +111,7 @@ def tweet_mention():
         texti = thready(url)
         text = clean(texti)
         #textii = {"text": text}
+        GPT2_model = TransformerSummarizer(transformer_type="GPT2", transformer_model_key="gpt2-medium")
         full = ''.join(GPT2_model(text, min_length=50))
         #fu2 = gpt_2(text = textii)
         #if fu2 == 'An error occur, pls try again':
