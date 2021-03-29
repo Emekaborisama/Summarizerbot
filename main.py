@@ -105,7 +105,7 @@ def record_tweet_summary(tweet, summary, tweetid):
     return ref_id
 
 def tweet_mention():
-    tweets = api.mentions_timeline(tweet_mode = 'extended', count = 1)
+    tweets = api.mentions_timeline(tweet_mode = 'extended', count = 1, since_id = 1)
     for tweet in tweets:  
         #record_id = record.insert_one(str(tweet.id))
         url =  'https://twitter.com/' + tweet.id_str+ '/status/' + str(tweet.in_reply_to_status_id)
