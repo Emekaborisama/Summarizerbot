@@ -128,7 +128,7 @@ def tweet_mention():
         print('done with the one tweet update....')      
     except:
         print(ref_idd)
-        send_user = 'https://summapi.herokuapp.com/summa/?ref_id='+str(ref_idd)
+        send_user = 'https://summarizerdbapi-emekaborisama.cloud.okteto.net/summa/?ref_id='+str(ref_idd)
         api.update_status('Your summary exceeded our limit, so we created a link for your summary. Click the link to view your summary \n'+send_user, in_reply_to_status_id = tweet.id, auto_populate_reply_metadata = True)
         print('done with the link tweet update....')      
     
