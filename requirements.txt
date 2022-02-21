@@ -8,7 +8,7 @@ pymongo[tls,srv]
 flask
 pymongo
 bert-extractive-summarizer
-transformers==2.2.0
+transformers
 #spacy==2.1.3
 #spacy == 2.2.0
 #neuralcoref
