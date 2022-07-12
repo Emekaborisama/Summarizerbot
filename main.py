@@ -178,7 +178,7 @@ while True:
                 print(False)
                 tweet.favorite()
                 tweet.retweet()
-    except tp.TweepError:
+    except tp.errors.TweepError:
         # If an exception occurs, generally if will be tweepy.RateLimitError and in that case the bot will sleep for 15 minutes.
         pass
 
