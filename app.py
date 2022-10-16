@@ -22,8 +22,8 @@ logger = logging.getLogger()
 
 # Start writing code here...import tweepy as tp
 # Start writing code here...import tweepy as tp
-auth = tp.OAuthHandler('tlw54qI2CQCpl4jMeTzzO84lo', 'XZmyDbiGYlYT9Gpsxt3xxzspcYNcdVWDwgforsB8U0RuJOCBjn')
-auth.set_access_token('1305611268447928320-dXwydd1AssWvEYCu0E24KpL9MhzVX2', 'DG8kwsQsHAsMonLclgWtnPOzKIY3fZomo4xh9e2sYuUEf')
+auth = tp.OAuthHandler('xxxx', 'xxxx')
+auth.set_access_token('xxx-xxx', 'xxx')
 api = tp.API(auth, wait_on_rate_limit=True, wait_on_rate_limit_notify=True)
 
 
@@ -36,7 +36,7 @@ except:
 import pymongo
 import dns
 
-client = pymongo.MongoClient("mongodb+srv://emekaboria:1kgJNTP2YpNe0CNM@cluster0.g6tlp.mongodb.net/tweetid?retryWrites=true&w=majority")
+client = pymongo.MongoClient("xxxxxx")
 db = client.get_database('tweetid')
 record = db.summa_collection
 
